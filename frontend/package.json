@@ -1,0 +1,23 @@
+{
+  "name": "1now-social-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "1Now Social Studio — AI-powered Business Card & Car Post generator for social media",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "html-to-image": "^1.11.11",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.8"
+  }
+}

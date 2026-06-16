@@ -1,0 +1,27 @@
+# Render blueprint for the 1Now Social Studio backend.
+# Render → New → Blueprint → point at this repo. Fill the `sync: false`
+# secrets in the dashboard after the service is created.
+services:
+  - type: web
+    name: 1now-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DATABASE_URL          # Supabase → Settings → Database → Session pooler URI (IPv4)
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: OLLAMA_API_KEY
+        sync: false
+      - key: OLLAMA_MODEL
+        value: gpt-oss:120b
+      - key: CORS_ORIGIN           # your Vercel URL, e.g. https://1now-feature.vercel.app
+        sync: false

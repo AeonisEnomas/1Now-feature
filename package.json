@@ -1,0 +1,17 @@
+{
+  "name": "1now-social-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "1Now Social Studio — monorepo (frontend + backend + db)",
+  "scripts": {
+    "dev": "concurrently -n api,web -c magenta,cyan \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm --prefix backend run dev",
+    "dev:web": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix backend run start",
+    "install:all": "npm install && npm --prefix frontend install && npm --prefix backend install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
