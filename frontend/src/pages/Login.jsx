@@ -16,10 +16,12 @@ export default function Login() {
     e.preventDefault()
     setError(''); setBusy(true)
     try {
-      await signIn(form)
-      navigate('/dashboard', { replace: true })
+      const u = await signIn(form)
+      if (u) navigate('/dashboard', { replace: true })
+      else setError('Please confirm your email before signing in.')
     } catch (err) {
-      setError(err.message || 'Could not sign in.')
+      const msg = err.message || 'Could not sign in.'
+      setError(/confirm/i.test(msg) ? 'Please confirm your email, then sign in.' : msg)
     } finally {
       setBusy(false)
     }

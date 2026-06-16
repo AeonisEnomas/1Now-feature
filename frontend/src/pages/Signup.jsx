@@ -10,6 +10,7 @@ export default function Signup() {
   const [form, setForm] = useState({ name: '', email: '', password: '' })
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [confirmSent, setConfirmSent] = useState(false)
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
@@ -17,13 +18,32 @@ export default function Signup() {
     e.preventDefault()
     setError(''); setBusy(true)
     try {
-      await signUp(form)
-      navigate('/dashboard', { replace: true })
+      const { needsConfirmation } = await signUp(form)
+      if (needsConfirmation) setConfirmSent(true)        // gate: stay off the dashboard
+      else navigate('/dashboard', { replace: true })
     } catch (err) {
       setError(err.message || 'Could not create account.')
     } finally {
       setBusy(false)
     }
+  }
+
+  if (confirmSent) {
+    return (
+      <AuthLayout>
+        <h2 className="auth-title">Confirm your email</h2>
+        <p className="auth-desc" style={{ marginTop: 12 }}>
+          We sent a confirmation link to <strong>{form.email}</strong>. Click it to activate your
+          account, then sign in. The card &amp; post generators unlock once your email is confirmed.
+        </p>
+        <Link to="/login" className="btn btn-primary btn-lg btn-block" style={{ marginTop: 24 }}>
+          Go to sign in
+        </Link>
+        <p className="auth-foot">
+          Wrong address? <Link to="/signup" onClick={() => setConfirmSent(false)}>Start over</Link>
+        </p>
+      </AuthLayout>
+    )
   }
 
   return (

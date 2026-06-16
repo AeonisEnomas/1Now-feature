@@ -17,15 +17,15 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signIn = useCallback(async (creds) => {
-    const u = await auth.signIn(creds)
-    setUser(u)
+    const { user: u } = await auth.signIn(creds)
+    if (u) setUser(u)
     return u
   }, [])
 
   const signUp = useCallback(async (creds) => {
-    const u = await auth.signUp(creds)
-    setUser(u)
-    return u
+    const { user: u, needsConfirmation } = await auth.signUp(creds)
+    if (u) setUser(u)            // only "logged in" when a real session exists
+    return { user: u, needsConfirmation }
   }, [])
 
   const signOut = useCallback(async () => {

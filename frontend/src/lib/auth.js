@@ -36,21 +36,32 @@ const demo = {
   getUser() { return readJSON(DEMO_SESSION, null) },
 }
 
-/* ---------- Public API ---------- */
+/* ---------- Public API ----------
+   Returns { user, needsConfirmation }. When Supabase email confirmation is
+   on, signUp returns no session — so user is null and needsConfirmation is
+   true, and the UI keeps them off the dashboard until they confirm. */
 export async function signUp({ email, password, name }) {
-  if (!isSupabaseConfigured) return demo.signUp(email, password, name)
+  if (!isSupabaseConfigured) {
+    const user = await demo.signUp(email, password, name)
+    return { user, needsConfirmation: false }
+  }
   const { data, error } = await supabase.auth.signUp({
     email, password, options: { data: { name } },
   })
   if (error) throw error
-  return mapUser(data.user)
+  // A session is only issued when the account is usable (confirmed / no confirmation required).
+  if (data.session) return { user: mapUser(data.user), needsConfirmation: false }
+  return { user: null, needsConfirmation: true }
 }
 
 export async function signIn({ email, password }) {
-  if (!isSupabaseConfigured) return demo.signIn(email, password)
+  if (!isSupabaseConfigured) {
+    const user = await demo.signIn(email, password)
+    return { user, needsConfirmation: false }
+  }
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) throw error
-  return mapUser(data.user)
+  return { user: mapUser(data.user), needsConfirmation: false }
 }
 
 export async function signOut() {
