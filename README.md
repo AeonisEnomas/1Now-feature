@@ -1,5 +1,7 @@
 # 1Now Social Studio
 
+### 🔗 Live demo: **https://1-now-feature.vercel.app**
+
 AI-powered **Business Card** & **Car Post** generator for car-rental businesses. Fill your details once, then generate polished, share-ready social graphics in seconds — and post them straight to WhatsApp, Facebook, X and LinkedIn.
 
 > Monorepo: **`frontend/`** (React + Vite) · **`backend/`** (Express REST API) · **`db/`** (Supabase SQL). Supabase hosts both **auth** and the **PostgreSQL** database; the backend talks to Postgres and proxies the AI so no keys ever touch the browser.
